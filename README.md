@@ -20,41 +20,44 @@ This tutorial outlines the implementation of on-premises Active Directory within
 <h2>Operating Systems Used </h2>
 
 - Windows Server 2022
-- Windows 10 (21H2)
+- Windows 10 (22H2)
 
-<h2>Deployment and Configuration Steps</h2>
+<h2>Setup Resources in Azure</h2>
+
+### In case you haven't done this in the previous Repositories this should help you do a quick catch up. For more details go to https://github.com/LamareMartin98/osticket-prereqs.git
 
 1.) The first thing you are going to want to do is create a virtual machine by going to https://portal.azure.com/. Setup your virtual machine with Windows 10 Pro, version 22H2. Note, you will want to create a virtual machine with atleast 2 vcpus and 16 gbs of memory.
 
-2.) Once you have created your virtual machine you will want to conncet to it by using the public ip address the vm is setup with. You will connect using the remote desktop connection app.
+2.) Once you have created your virtual machine you will want to connect to it by using the public ip address the vm is setup with. You will connect using the remote desktop connection app.
 
+-  Create the Domain Controller VM (Windows Server 2022) named “DC-1”
 
-## In case you haven't done this in the previous Repositories this should help you do a quick catch up. For nore details go to 
+      a.  Take note of the Resource Group and Virtual Network (Vnet) that get created at this time
 
--  Create a Resource Group
-
--  Create a Windows 10 Virtual Machine (VM) with 2-4 Virtual CPUs
-
-      a. When creating the VM, allow it to create a new Virtual Network (Vnet)
-
-Setup Resources in Azure
 Create the Domain Controller VM (Windows Server 2022) named “DC-1”
+
 Take note of the Resource Group and Virtual Network (Vnet) that get created at this time
+
 Set Domain Controller’s NIC Private IP address to be static
+
 Create the Client VM (Windows 10) named “Client-1”. Use the same Resource Group and Vnet that was created in Step 1.a
+
 Ensure that both VMs are in the same Vnet (you can check the topology with Network Watcher
 
-Ensure Connectivity between the client and Domain Controller
+## Ensure Connectivity between the client and Domain Controller
+
 Login to Client-1 with Remote Desktop and ping DC-1’s private IP address with ping -t <ip address> (perpetual ping)
+
 Login to the Domain Controller and enable ICMPv4 in on the local windows Firewall
+
 Check back at Client-1 to see the ping succeed
 
-Install Active Directory
+### Install Active Directory
 Login to DC-1 and install Active Directory Domain Services
 Promote as a DC: Setup a new forest as mydomain.com (can be anything, just remember what it is)
 Restart and then log back into DC-1 as user: mydomain.com\labuser
 
-Create an Admin and Normal User Account in AD
+### Create an Admin and Normal User Account in AD
 In Active Directory Users and Computers (ADUC), create an Organizational Unit (OU) called “_EMPLOYEES”
 Create a new OU named “_ADMINS”
 Create a new employee named “Jane Doe” (same password) with the username of “jane_admin”
